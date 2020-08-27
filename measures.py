@@ -1,7 +1,7 @@
 # MAE, Precision, Recall, F-measure, IoU, Precision-Recall curves
 import numpy as np
 from skimage import io
-
+import os
 import matplotlib.pyplot as plt
 
 def mask_normalize(mask):
@@ -51,7 +51,7 @@ def compute_ave_MAE_of_methods(gt_name_list,rs_dir_lists):
         print('-Processed %d/%d'%(i+1,num_gt),end='\r')
         #print("Completed {:2.0%}".format(i / num_gt), end="\r") # print percentile of processed, python 3.0 and newer version
         gt = io.imread(gt_name_list[i]) # read ground truth
-        gt_name = gt_name_list[i].split('/')[-1] # get the file name of the ground truth
+        gt_name = gt_name_list[i].split(os.sep)[-1] # get the file name of the ground truth
         for j in range(0,num_rs_dir):
             tmp_mae = 0.0
             try:
@@ -131,7 +131,7 @@ def compute_PRE_REC_FM_of_methods(gt_name_list,rs_dir_lists,beta=0.3):
         print('>>Processed %d/%d'%(i+1,num_gt),end='\r')
         gt = io.imread(gt_name_list[i]) # read ground truth
         gt = mask_normalize(gt)*255.0 # convert gt to [0,255]
-        gt_name = gt_name_list[i].split('/')[-1] # get the file name of the ground truth "xxx.png"
+        gt_name = gt_name_list[i].split(os.sep)[-1] # get the file name of the ground truth "xxx.png"
 
         for j in range(0,num_rs_dir):
             pre, rec, f = np.zeros(len(mybins)), np.zeros(len(mybins)), np.zeros(len(mybins)) # pre, rec, f or one mask w.r.t different thresholds
